@@ -86,6 +86,14 @@ void OpenGLWindow::renderNow()
     if (needsInitialize) {
         initializeOpenGLFunctions();
         initialize();
+
+#if !defined(QT_OPENGL_ES)
+        if (!QOpenGLContext::currentContext()->isOpenGLES()) {
+                // Make it possible to change point primitive size and use textures with them in
+                // the shaders. These are implicitly enabled in ES2.
+                glEnable(GL_PROGRAM_POINT_SIZE);
+        }
+#endif
     }
 
     render();
